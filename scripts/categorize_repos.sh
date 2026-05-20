@@ -54,7 +54,8 @@ else
 fi
 
 # Load profile-keep allowlist (newline-delimited basenames; ignore # comments and blanks).
-KEEP_BASENAMES=$(grep -v '^[[:space:]]*#' "$KEEP_FILE" | grep -v '^[[:space:]]*$' | tr '\n' ',' | sed 's/,$//')
+# awk (not grep) so an all-comments/all-blank file doesn't trip `set -e` with exit 1.
+KEEP_BASENAMES=$(awk '!/^[[:space:]]*#/ && !/^[[:space:]]*$/' "$KEEP_FILE" | tr '\n' ',' | sed 's/,$//')
 
 # Build the set of basenames already in the target org (collision detection).
 COLLIDE_SET=$(jq -rs --arg t "$TARGET" '[.[] | select(.owner == $t) | .full_name | split("/")[1]] | unique | join(",")' "$IN")

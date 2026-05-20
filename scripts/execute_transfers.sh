@@ -134,12 +134,15 @@ process_bucket() {
 
     case "$bucket" in
       rename_then_transfer)
-        # Rename source first, then transfer the renamed source via REST API
-        # (gh has no `repo transfer` subcommand; only the API endpoint exists).
-        local rename_args=(repo rename "${base}-legacy" --repo "$full_name")
+        # Rename source first, then transfer the renamed source via REST API.
+        # The renamed name MUST be unique in the target org, because multiple
+        # source orgs can share the same basename (e.g. every org has a
+        # `.github` repo). Prefix with source owner to disambiguate.
+        local renamed="${owner}-${base}-legacy"
+        local rename_args=(repo rename "$renamed" --repo "$full_name")
         [[ "$YES" == "1" ]] && rename_args+=(--yes)
         run_gh "$row" "rename" "${rename_args[@]}" || { echo "    (rename failed; skipping)"; continue; }
-        run_gh "$row" "transfer" api -X POST "repos/${owner}/${base}-legacy/transfer" -f "new_owner=${TARGET}" || echo "    (transfer failed)"
+        run_gh "$row" "transfer" api -X POST "repos/${owner}/${renamed}/transfer" -f "new_owner=${TARGET}" || echo "    (transfer failed)"
         ;;
       transfer_archived|transfer_private|transfer_public)
         run_gh "$row" "transfer" api -X POST "repos/${full_name}/transfer" -f "new_owner=${TARGET}" || echo "    (transfer failed)"
