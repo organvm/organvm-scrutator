@@ -1,0 +1,22 @@
+# scripts/profile_keep.txt
+#
+# Repo basenames that should remain on the personal profile (NOT transferred).
+# One basename per line. Comments start with '#'. Blank lines ignored.
+#
+# Two implicit rules also apply (no need to list these here):
+#   - <username>/<username>            -- the persona README repo
+#   - <username>/<username>.github.io  -- the user-site Pages repo
+#
+# Edit this file before running scripts/categorize_repos.sh.
+# Anything matched here will be bucketed as `keep_on_profile`.
+
+resume
+cv
+about
+me
+personal
+personal-site
+portfolio
+contrib
+contributions
+dotfiles
