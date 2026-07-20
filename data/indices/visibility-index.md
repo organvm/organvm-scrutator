@@ -1,6 +1,6 @@
 # Visibility Index — Plan Registry
 
-**Generated:** 2026-07-19T05:26:50.790348
+**Generated:** 2026-07-20T05:47:31.427395
 **Total Plans:** 0
 
 ## By Repository
